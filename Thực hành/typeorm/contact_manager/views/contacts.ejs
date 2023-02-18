@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+    <title>Contacts</title>
+
+</head>
+
+
+<body>
+
+<h3>Contacts:</h3>
+
+<div class="grid">
+
+    <% for (let contact of contacts) { %>
+
+        <article class="card product-item">
+
+            <header class="card__header">
+
+                <p class="product__title">
+
+                    <%= contact.name %>
+
+                </p>
+
+            </header>
+
+            <div class="card__image">
+
+                <p class="product__price">
+
+                    <%= contact.address %>
+
+                </p>
+
+            </div>
+
+            <div class="card__content">
+
+                <p class="product__price">
+
+                    <%= contact.email %>
+
+                    </h2>
+
+                <p class="product__description">
+
+                    <%= contact.phone %>
+
+                </p>
+
+            </div>
+
+        </article>
+
+        </br>
+
+    <% } %>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<% for (const val of data) { %>
+    <h3 class="title"><%= val.title %></h3>
+    <p class="content"><%= val.content %></p>
+    <br>
+<% } %>
+</body>
+</html>
