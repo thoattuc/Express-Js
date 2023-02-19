@@ -4,13 +4,10 @@ const PORT = 3000;
 const path = require('path');
 const multer = require("multer");
 
+//---config ejs & static files---//
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-const blogs = [];
 
 //---config multer---/
 const storage = multer.diskStorage({
@@ -22,9 +19,13 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({storage: storage});
+
+const blogs = []; //tao mang luu du lieu tren server
+
+//---routes---//
 app.get('/blogs/create', (req, res) => {
     res.render('create');
-})
+});
 app.post('/blogs/create', upload.single('image'), (req, res) => {
     if (req.body && req.file) {
         const blog = {
@@ -36,11 +37,10 @@ app.post('/blogs/create', upload.single('image'), (req, res) => {
         res.redirect('/blogs');
     }
 });
-
 app.get('/blogs', (req, res) => {
     res.render('blogs',{data: blogs});
-})
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-})
+});
