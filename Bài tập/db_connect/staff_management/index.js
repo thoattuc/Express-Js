@@ -4,6 +4,7 @@ const PORT = 3000;
 const path = require('path');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -22,37 +23,51 @@ connection.connect((err) => {
     }
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+//---config ejs & static files---//
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-const fileUpload = require('express-fileupload');
-app.use(fileUpload({
-    createParentPath: true
-}));
+//---config file-upload---//
+app.use(fileUpload({}));
 
 app.get('/staffs/create', (req, res) => {
-        res.render('create');
-    });
+    res.render('create');
+});
 app.post('/staffs/create', (req, res) => {
-        let {name, salary, position} = req.body;
-        console.log(">>> req.body:",req.body);
-        let insertSQL = `INSERT INTO staffs(name, salary, position) VALUES ?`;
-        let value = [
-            [name, salary, position]
-        ];
-        connection.query(insertSQL, [value], (err, result) => {
+    if (!req.body || !req.files) {
+        return res.status(400).send('Invalid input.');
+    }
+
+    let staff = {
+        name: req.body.name,
+        salary: req.body.salary,
+        position: req.body.position,
+    };
+
+    let avatar = req.files.avatar;
+    let avatarName = avatar.name;
+
+    //---config save files---//
+    avatar.mv(path.join(__dirname, 'public', 'images', avatarName), (err) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        console.log(">>> staff:", staff);
+        let insertSQL = `INSERT INTO staffs(name, salary, position, path)
+                         VALUES (?, ?, ?, ?)`;
+        connection.query(insertSQL, [staff.name, staff.salary, staff.position, avatarName], (err, result) => {
             if (err) {
                 throw err.stack;
             } else {
-                console.log(">>> result:",result)
                 res.redirect('/staffs');
             }
         })
     });
+});
 
 app.get('/staffs', (req, res) => {
     let page = req.query.page ? parseInt(req.query.page) : 1;
@@ -60,8 +75,12 @@ app.get('/staffs', (req, res) => {
     let offset = (page - 1) * limit;
     let totalItems;
 
-    let selectCountSQL = `SELECT COUNT(*) AS total FROM staffs`;
-    let selectDataSQL = `SELECT id, name, salary, position FROM staffs limit ${limit} offset ${offset}`;
+    let selectCountSQL = `SELECT COUNT(*) AS total
+                          FROM staffs`;
+
+    let selectDataSQL = `SELECT id, name, salary, position
+                         FROM staffs limit ${limit}
+                         offset ${offset}`;
 
     connection.query(selectCountSQL, (err, result) => {
         if (err) {
@@ -69,7 +88,7 @@ app.get('/staffs', (req, res) => {
         } else {
             totalItems = result[0].total;
         }
-    })
+    });
     connection.query(selectDataSQL, (err, result) => {
         if (err) {
             throw err.stack;
@@ -79,9 +98,9 @@ app.get('/staffs', (req, res) => {
                 staffs: result,
                 totalPages,
                 currentPage: page,
-            })
+            });
         }
-    })
+    });
 });
 
 app.listen(PORT, () => {
