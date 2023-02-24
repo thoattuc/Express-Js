@@ -1,15 +1,13 @@
-import { AppDataSource } from "./src/data-source";
 import express from "express";
 import bodyParser from 'body-parser';
+
 const PORT = 3000;
+const app = express();
 
-AppDataSource.initialize().then(async connection => {
-    const app = express();
-    app.use(bodyParser.json());
-    //---create EntityRepo by connection.getRepository(Entity)---//
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+})
 
-
-    app.listen(PORT, () => {
-        console.log("App running with port: " + PORT)
-    });
+app.listen(PORT, () => {
+    console.log("App running with port: http://localhost:" + PORT)
 });

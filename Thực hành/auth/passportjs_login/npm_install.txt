@@ -1,0 +1,22 @@
+//commit
+npm init
+
+//express
+npm i express
+
+//tsconfig
+npm i -D typescript tsc tsc-watch rimraf @types/express
+
+//multer + ejs
+npm i multer ejs
+
+//body-parser
+npm i body-parser
+
+//passport:
+npm i -D @types/passport
+npm i validator express-session passport passport-local
+
+//mongoose:
+npm i mongoose
+npm install @types/mongoose --save-dev
