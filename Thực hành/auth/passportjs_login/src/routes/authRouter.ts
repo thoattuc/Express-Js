@@ -35,4 +35,11 @@ router.post('/login', upload.none(), (req, res, next) => {
 
 })
 
+router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+
+// truy suat du lieu nguoi dung bang ma thong bao try cap nhan duoc
+router.get('/google/callback', passport.authenticate('google'), (req, res) => {
+    res.send("You are authenticated!");
+})
+
 export default router;

@@ -20,3 +20,6 @@ npm i validator express-session passport passport-local
 //mongoose:
 npm i mongoose
 npm install @types/mongoose --save-dev
+
+//passport-google-oauth2:
+npm i passport-google-oauth2
