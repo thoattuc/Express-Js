@@ -13,3 +13,5 @@ const ProductSchema = new Schema<IFProduct>({
 });
 
 const ProductModel = model<IFProduct>('Product', ProductSchema);
+
+export {ProductModel}
