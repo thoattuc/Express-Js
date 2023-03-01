@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+    <title>Products</title>
+
+    <style>
+
+        .pagination a {
+
+            color: black;
+
+            float: left;
+
+            padding: 12px 18px;
+
+            text-decoration: none;
+
+        }
+
+        /* thiết lập style cho class active */
+
+        .pagination a.active {
+
+            background-color: dodgerblue;
+
+            color: white;
+
+            /*Thiết kế hình tròn với CSS*/
+
+            border-radius: 50%;
+
+        }
+
+        /* thêm màu nền khi người dùng hover vào class không active */
+
+        .pagination a:hover:not(.active) {
+
+            background-color: #ddd;
+
+            /*Thiết kế hình tròn với CSS*/
+
+            border-radius: 50%;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<h2><%= title %></h2>
+
+<% for(const product of products) { %>
+
+    <h3>
+
+        Name: <%= product.name %>
+
+    </h3>
+
+    <p>
+
+        Price: <%= product.price %>
+
+    </p>
+
+    <p>
+
+        Producer: <%= product.producer %>
+
+    </p>
+
+    <p>
+
+        Avatar: <img style="width: 20px" src="/images/<%= product.image %>" alt="">
+
+    </p>
+
+    </br>
+
+<% } %>
+
+<div class="pagination">
+
+    <a href="#">«</a>
+
+    <a href="http://localhost:3000/product/list?offset=0&limit=3">1</a>
+
+    <a href="http://localhost:3000/product/list?offset=1&limit=3">2</a>
+
+    <a href="http://localhost:3000/product/list?offset=2&limit=3">3</a>
+
+    <a href="http://localhost:3000/product/list?offset=3&limit=3">4</a>
+
+    <a href="http://localhost:3000/product/list?offset=4&limit=3">5</a>
+
+    <a href="http://localhost:3000/product/list?offset=5&limit=3">6</a>
+
+    <a href="#">»</a>
+
+</div>
+
+</body>
+
+
+</html>
