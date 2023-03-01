@@ -45,7 +45,16 @@ productRouter.post('/create', upload.single("image"), async (req, res) => {
 
 productRouter.get('/list', async (req, res) => {
     try {
-        const products = await ProductModel.find();
+        let limit: number;
+        let offset: number;
+        if(!req.query.limit || !req.query.limit) {
+            limit = 3;
+            offset = 0;
+        } else {
+            limit = parseInt(req.query.limit as string);
+            offset = parseInt(req.query.offset as string);
+        }
+        const products = await ProductModel.find().limit(limit).skip(limit*offset);
         res.render("listProduct", {products: products, title: "List Products"});
     } catch (error) {
         res.render("error");
